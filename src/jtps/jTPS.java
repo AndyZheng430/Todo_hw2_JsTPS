@@ -61,8 +61,8 @@ public class jTPS {
     public void addTransaction(jTPS_Transaction transaction) {
         // ARE THERE OLD UNDONE TRANSACTIONS ON THE STACK THAT FIRST
         // NEED TO BE CLEARED OUT, i.e. ARE WE BRANCHING?
-        if ((mostRecentTransaction < 0)|| (mostRecentTransaction < (transactions.size()-1))) {
-            for (int i = transactions.size()-1; i > mostRecentTransaction; i--) {
+        if ((mostRecentTransaction < 0)|| (mostRecentTransaction < (transactions.length()-1))) {
+            for (int i = transactions.length()-1; i > mostRecentTransaction; i--) {
                 transactions.remove(i);
             }
         }
@@ -155,7 +155,7 @@ public class jTPS {
      * @return The number of transactions currently in the transaction stack.
      */
     public int getSize() {
-        return this.transactions.size();
+        return this.transactions.length();
     }
     
     /**
@@ -197,7 +197,7 @@ public class jTPS {
      * @return true if a redo operation is possible, false otherwise.
      */
     public boolean hasTransactionToRedo() {
-        return mostRecentTransaction < (transactions.size()-1);
+        return mostRecentTransaction < (transactions.length()-1);
     }
         
     /**
@@ -208,7 +208,7 @@ public class jTPS {
      * @return A textual summary of the TPS.
      */
     public String toString() {
-        String text = "--Number of Transactions: " + transactions.size() + "\n";
+        String text = "--Number of Transactions: " + transactions.length() + "\n";
         text += "--Current Index on Stack: " + mostRecentTransaction + "\n";
         text += "--Current Transaction Stack:\n";
         for (int i = 0; i <= mostRecentTransaction; i++) {
