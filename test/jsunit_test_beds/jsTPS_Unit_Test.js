@@ -13,15 +13,15 @@ import jsTPS from "../jstps/jsTPS.js";
  * @author McKilla Gorilla
  * @version 2.0
  */
-class jsTPS_Unit_Tests {
-    /**
-     * This JUnit test is for testing the adding of transactions.
-     */
+class jsTPS_Unit_Test {
+    constructor() {
+
+    }
     
-    testAdd = () => {
+    testAdd() {
         // WE'LL JUST USE A SIMPLE NUM FOR TESTING
-        tps = new jTPS();
-        num = new Num();
+        var tps = new jsTPS();
+        var num = new Num();
         Assert.assertEquals(0, num.getNum());
         
         // ADD 5 TRANSACTION

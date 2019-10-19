@@ -1,4 +1,4 @@
-export default class jstps_AddToNum_Transaction {
+class jstps_AddToNum_Transaction {
     
     constructor(initNum, initAmountToAdd) {
         this.num = initNum;

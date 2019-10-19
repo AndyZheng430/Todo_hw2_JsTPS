@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+
+    <head>
+        <title>JavaScript Testing</title>
+        <!-- <link href="./css/fonts/Lexend Exa/css.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="./css/todo_layout.css" />
+        <link rel="stylesheet" type="text/css" href="./css/todo_style.css" /> -->
+
+        <script src="./src/jstps/jsTPS.js"></script>
+        <script src="./test/jstps_demo/jstps_AddToNum_Transaction.js"></script>
+        <script src="./test/jstps_demo/jstps_AndMask_transaction.js"></script>
+        <script src="./test/jstps_demo/jstps_Num.js"></script>
+        <script src="./test/jstps_demo/jstps_OrMask_Transaction.js"></script>
+        <script src="./test/jstps_demo/jstps_Tester.js"></script>
+
+        <!-- FOR TESTING OUR TODO LISTS -->
+        <script src="./test/jsunit_test_beds/jsTPS_Unit_Test.js"></script>
+
+        <script>
+            window.onload = function () {
+                window.jsTester = new jstps_Tester();
+                window.jsTest = new jsTPS_Unit_Test();
+                window.jsTest.testAdd();
+            }
+        </script>
+    </head>
+
+    <body>
+        <h1>JavaScript Tester</h1>
+    </body>
+</html>

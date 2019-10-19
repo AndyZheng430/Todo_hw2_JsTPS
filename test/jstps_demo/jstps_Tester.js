@@ -1,19 +1,20 @@
 class jstps_Tester {
-    static tps = new jsTPS();
-    static num = new jstps_Num();
+    
     constructor() {
         this.keepGoing = true;
+        this.num = new jstps_Num();
+        this.tps = new jsTPS();
     }
 
     function = () => {
         while (this.keepGoing) {
             // DISPLAY THE CURRENT TPS
             this.console.log("CURRENT jTPS:");
-            this.console.log(tps);
+            this.console.log(this.tps);
             this.console.log();
                 
             // DISPLAY NUM
-            this.console.log("num is " + num.getNum());
+            this.console.log("num is " + this.num.getNum());
             this.console.log();
                 
             // DISPLAY THE MENU
@@ -26,15 +27,15 @@ class jstps_Tester {
             this.console.log("-");
 
             // GET THE USER SELECTION
-            entry = prompt();
+            var entry = prompt();
                 
             // ADD AND EXECUTE A TRANSACTION
             if (entry.startsWith("1")) {
                 this.console.log("\nEnter an amount to add: ");
                 entry = input.nextLine();
-                amountToAdd = Integer.parseInt(entry);
-                transaction = new jstps_AddToNum_Transaction(num, amountToAdd);
-                tps.addTransaction(transaction);
+                var amountToAdd = Integer.parseInt(entry);
+                var transaction = new jstps_AddToNum_Transaction(this.num, amountToAdd);
+                this.tps.addTransaction(transaction);
             }            
             // UNDO A TRANSACTION
             else if (entry.startsWith("2")) {
@@ -55,7 +56,7 @@ class jstps_Tester {
             }
             // QUIT
             else if (entry.startsWith("Q")) {
-                keepGoing = false;
+                this.keepGoing = false;
             }
         }
         console.log('GoodBye');

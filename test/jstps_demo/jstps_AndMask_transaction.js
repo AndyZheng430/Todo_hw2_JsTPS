@@ -1,4 +1,4 @@
-export default class jstps_AndMask_Transaction {
+class jstps_AndMask_Transaction {
     
     constructor(initNum, initIntNum, initMask) {
         this.num = initNum;
