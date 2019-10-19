@@ -1,21 +1,18 @@
 class jstps_Num {
+
     constructor() {
         this.num = 0;
     }
-
     setNum(initNum) {
-        num = initNum;
+        this.num = initNum;
     }
-
     getNum() {
-        return num;
+        return this.num;
     }
-
     andMask(mask) {
-        num = num & mask;
+        this.num = this.num & mask;
     }
-
     orMask(mask) {
-        num = num | mask;
+        this.num = this.num | mask;
     }
 }

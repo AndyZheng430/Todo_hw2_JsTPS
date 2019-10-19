@@ -3,11 +3,8 @@
 
     <head>
         <title>JavaScript Testing</title>
-        <!-- <link href="./css/fonts/Lexend Exa/css.css" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="./css/todo_layout.css" />
-        <link rel="stylesheet" type="text/css" href="./css/todo_style.css" /> -->
 
-        <script src="./src/jstps/jsTPS.js"></script>
+        <!-- <script src="./src/jstps/jsTPS.js"></script>
         <script src="./test/jstps_demo/jstps_AddToNum_Transaction.js"></script>
         <script src="./test/jstps_demo/jstps_AndMask_transaction.js"></script>
         <script src="./test/jstps_demo/jstps_Num.js"></script>
@@ -15,18 +12,271 @@
         <script src="./test/jstps_demo/jstps_Tester.js"></script>
 
         <!-- FOR TESTING OUR TODO LISTS -->
-        <script src="./test/jsunit_test_beds/jsTPS_Unit_Test.js"></script>
-
+        <!-- <script src="./test/jsunit_test_beds/jsTPS_Unit_Test.js"></script> -->
         <script>
-            window.onload = function () {
-                window.jsTester = new jstps_Tester();
-                window.jsTest = new jsTPS_Unit_Test();
-                window.jsTest.testAdd();
+            class jsTPS_transaction {
+
+                doTransaction(){}
+
+                undoTransaction(){}
+            }
+
+            class jsTPS {
+                constructor() {
+                    this.transactions = [];
+                    this.mostRecentTransaction = -1;
+                    this.performingDo = false;
+                    this.performingUndo = false;
+                }
+                
+                isPerformingDo() {
+                    return this.performingDo;
+                }
+
+                isPerformingUndo() {
+                    return this.performingUndo;
+                }
+
+                addTransaction(transaction) {
+                    if ( (this.mostRecentTransaction < 0) || (this.mostRecentTransaction < (this.transactions.length - 1)) ) {
+                        for( var i = this.transactions.length - 1; i > this.mostRecentTransaction; i-- ) {
+                            this.transactions.splice(i, 1);
+                        }
+                    } 
+
+                    this.transactions.push(transaction);
+
+                    this.doTransaction();
+                }
+
+                doTransaction() {
+                    if ( this.hasTransactionToRedo() ) {
+                        this.performingDo = true;
+                        var transaction = this.transactions[this.mostRecentTransaction+1];
+                        transaction.doTransaction();
+                        this.mostRecentTransaction++;
+                        this.performingDo = false;
+                    }
+                }
+
+                //jTPS_Transaction
+                peekUndo = function() {
+                    if (this.hasTransactionToUndo()) {
+                        return this.transactions.get(this.mostRecentTransaction);
+                    }
+                    else
+                        return null;
+                }
+
+                //jTPS_Transaction
+                peekDo = function() {
+                    if (this.hasTransactionToRedo()) {
+                        return this.transactions.get(this.mostRecentTransaction+1);
+                    }
+                    else
+                        return null;
+                }
+
+                undoTransaction() {
+                    if (this.hasTransactionToUndo()) {
+                        this.performingUndo = true;
+                        var transaction = this.transactions[this.mostRecentTransaction];
+                        transaction.undoTransaction();
+                        this.mostRecentTransaction--;
+                        this.performingUndo = false;
+                    }
+                }
+
+                clearAllTransactions() {
+                    this.transactions.clear();
+                    this.mostRecentTransaction = -1;        
+                }
+
+                getSize() {
+                    return this.transactions.length;
+                }
+
+                getRedoSize() {
+                    return this.getSize() - this.mostRecentTransaction - 1;
+                }
+
+                getUndoSize() {
+                    return this.mostRecentTransaction + 1;
+                }
+
+                hasTransactionToUndo() {
+                    return this.mostRecentTransaction >= 0;
+                }
+
+                hasTransactionToRedo() {
+                    return this.mostRecentTransaction < (this.transactions.length - 1);
+                }
+
+                toString() {
+                    var text = "--Number of Transactions: " + this.transactions.length + "\n";
+                    text += "--Current Index on Stack: " + this.mostRecentTransaction + "\n";
+                    text += "--Current Transaction Stack:\n";
+                    for (var i = 0; i <= this.mostRecentTransaction; i++) {
+                        var jT = this.transactions.get(i);
+                        text += "----" + jT.toString() + "\n";
+                    }
+                    return text;
+                }
+            }   
+            class jstps_AddToNum_Transaction {
+                
+                constructor(initNum, initAmountToAdd) {
+                    this.num = initNum;
+                    this.amountToAdd = initAmountToAdd;
+                }
+
+                doTransaction() {
+                    var oldNum = num.getNum();
+                    var newNum = oldNum + this.amountToAdd;
+                    num.setNum(newNum);
+                }
+
+                undoTransaction() {
+                    var oldNum = num.getNum();
+                    var newNum = oldNum - this.amountToAdd;
+                    num.setNum(newNum);
+                }
+
+                toString() {
+                    return "Add " + this.amountToAdd;
+                }
+            }
+
+            class jstps_AndMask_Transaction {
+                
+                constructor(initNum, initIntNum, initMask) {
+                    this.num = initNum;
+                    this.intNum = initIntNum;
+                    this.mask = initMask;
+                }
+
+                doTransaction() {
+                    this.num.andMask(mask);
+                }
+
+                undoTransaction() {
+                    this.num.setNum(intNum);
+                }
+
+                toString() {
+                    return "And Mask " + mask;
+                }
+            }
+
+            class jstps_Num {
+
+                constructor() {
+                    this.num = 0;
+                }
+
+                setNum(initNum) {
+                    this.num = initNum;
+                }
+
+                getNum() {
+                    return this.num;
+                }
+
+                andMask(mask) {
+                    this.num = this.num & mask;
+                }
+
+                orMask(mask) {
+                    this.num = this.num | mask;
+                }
+            }
+
+            class jstps_OrMask_Transaction{
+                constructor(initNum, initIntNum, initMask) {
+                    this.num = initNum;
+                    this.intNum = initIntNum;
+                    this.mask = initMask;
+                }
+
+                doTransaction() {
+                    num.orMask(mask);
+                }
+
+                undoTransaction() {
+                    num.setNum(intNum);
+                }
+
+                toString() {
+                    return "Or Mask " + mask;
+                }
+            }
+
+            //------------------------------------------------------------
+
+            let tps = new jsTPS();
+            let num = new jstps_Num();
+            num.setNum(parseInt(0));
+            add = () => {
+                var entry = document.getElementById("entry").value;
+
+                if(entry != null) {
+                    entry = parseInt(entry);
+                    var transactionAdd = new jstps_AddToNum_Transaction(num, entry);
+                    tps.addTransaction(transactionAdd);
+                    console.log("ADD: Num Value: " + num.getNum() + " || Number of Transactions: " + tps.getSize());
+                    document.getElementById("result").innerHTML = "ADD: Num Value: " + num.getNum() + " || Number of Transactions: " + tps.getSize();
+                }
+                else {
+                    console.log("Num Value: " + num.getNum() + " || Number of Transactions: " + tps.getSize());
+                    document.getElementById("result").innerHTML = "Num Value: " + num.getNum() + " || Number of Transactions: " + tps.getSize();
+                }
+            }
+            undo = () => {
+                tps.undoTransaction();
+                console.log("ADD: Num Value: " + num.getNum() + " || Number of Transactions: " + tps.getSize());
+                document.getElementById("result").innerHTML = "ADD: Num Value: " + num.getNum() + " || Number of Transactions: " + tps.getSize();
+            }
+
+            redo = () => {
+                tps.doTransaction();
+                console.log("ADD: Num Value: " + num.getNum() + " || Number of Transactions: " + tps.getSize());
+                document.getElementById("result").innerHTML = "ADD: Num Value: " + num.getNum() + " || Number of Transactions: " + tps.getSize();
+            }
+
+            clearAll = () => {
+                tps.clearAllTransactions();
+                console.log("ADD: Num Value: " + num.getNum() + " || Number of Transactions: " + tps.getSize());
+                document.getElementById("result").innerHTML = "ADD: Num Value: " + num.getNum() + " || Number of Transactions: " + tps.getSize();
+            }
+
+            resetAll = () => {
+                tps.clearAllTransactions();
+                num.setNum(0);
+                console.log("ADD: Num Value: " + num.getNum() + " || Number of Transactions: " + tps.getSize());
+                document.getElementById("result").innerHTML = "ADD: Num Value: " + num.getNum() + " || Number of Transactions: " + tps.getSize();
             }
         </script>
     </head>
 
     <body>
-        <h1>JavaScript Tester</h1>
+        <h1 style="text-align: center;">JavaScript Tester</h1>
+
+        <div style="text-align: center; width: 100%;">
+            <h4> Enter an amount to add: </h4>
+            <input type="text" id="entry">
+        </div>
+        <div style="text-align: center;">
+            <input type="button" value="Add a Transaction" onclick="add()"/>
+            <input type="button" value="Undo a Transaction" onclick="undo()"/>
+            <input type="button" value="Redo a Transaction"/>
+            <input type="button" value="Clear All Transactions"/>
+            <input type="button" value="Reset Num and Transactions"/>
+        </div>
+        <div style="text-align: center;">
+            <h4> Result: </h4>
+            <p id="result">
+
+            </p>
+        </div>
     </body>
 </html>

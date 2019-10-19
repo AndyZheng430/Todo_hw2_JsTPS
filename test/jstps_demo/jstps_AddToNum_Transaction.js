@@ -1,19 +1,19 @@
 class jstps_AddToNum_Transaction {
-    
+                
     constructor(initNum, initAmountToAdd) {
         this.num = initNum;
         this.amountToAdd = initAmountToAdd;
     }
 
     doTransaction() {
-        oldNum = num.getNum();
-        newNum = oldNum + this.amountToAdd;
+        var oldNum = num.getNum();
+        var newNum = oldNum + this.amountToAdd;
         num.setNum(newNum);
     }
 
     undoTransaction() {
-        oldNum = num.getNum();
-        newNum = oldNum - this.amountToAdd;
+        var oldNum = num.getNum();
+        var newNum = oldNum - this.amountToAdd;
         num.setNum(newNum);
     }
 

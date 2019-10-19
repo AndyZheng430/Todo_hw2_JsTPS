@@ -1,5 +1,5 @@
 class jstps_AndMask_Transaction {
-    
+                
     constructor(initNum, initIntNum, initMask) {
         this.num = initNum;
         this.intNum = initIntNum;
@@ -7,11 +7,11 @@ class jstps_AndMask_Transaction {
     }
 
     doTransaction() {
-        num.andMask(mask);
+        this.num.andMask(mask);
     }
 
     undoTransaction() {
-        num.setNum(intNum);
+        this.num.setNum(intNum);
     }
 
     toString() {
